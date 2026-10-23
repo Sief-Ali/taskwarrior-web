@@ -73,7 +73,7 @@ pnpm dev
 
 The web app uses the read-only `GET /tasks` endpoint and expects a JSON array. A task must include an `id`, `uuid`, `description`, and `status`. It can also include fields such as `project`, `urgency`, `modified`, and `parent` or `parent_uuid`.
 
-For the complete API setup, configuration, and endpoint documentation, see the [TaskWarrior API README](../server/README.md). The interactive API reference is available at `http://localhost:5000/v1/api-docs/` when using the backend's `/v1` prefix.
+For the complete API setup, configuration, and endpoint documentation, see the [TaskWarrior API README](https://github.com/Sief-Ali/taskwarrior-api). The interactive API reference is available at `http://localhost:5000/v1/api-docs/` when using the backend's `/v1` prefix.
 
 ## Project Structure
 
