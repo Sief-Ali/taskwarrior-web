@@ -6,10 +6,11 @@ interface TaskCardProps {
   task: Task;
   view: "boxes" | "list";
   depth: number;
+  onSelect: (uuid: string) => void;
   children?: ReactNode;
 }
 
-export function TaskCard({ task, view, depth, children }: TaskCardProps) {
+export function TaskCard({ task, view, depth, onSelect, children }: TaskCardProps) {
   const status = task.status.toLowerCase();
   const statusClass = status.replace(/[^a-z0-9]+/g, "-");
 
@@ -18,6 +19,16 @@ export function TaskCard({ task, view, depth, children }: TaskCardProps) {
       <article
         className={`task-card ${view === "list" ? "task-row" : ""} ${depth > 0 ? "is-child" : ""}`}
         style={view === "list" ? { "--depth": depth } as CSSProperties : undefined}
+        role="button"
+        tabIndex={0}
+        aria-label={`View details for task ${task.id}: ${task.description}`}
+        onClick={() => onSelect(task.uuid)}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            onSelect(task.uuid);
+          }
+        }}
       >
         <div className="task-card-top">
           <span className={`task-status status-${statusClass}`}>

@@ -11,6 +11,7 @@ export interface Task {
   urgency?: number;
   parent?: string;
   parent_uuid?: string;
+  details: Record<string, unknown>;
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -33,6 +34,11 @@ function parseTask(value: unknown): Task {
     uuid: value.uuid,
     description: value.description,
     status: value.status,
+    details: Object.fromEntries(
+      Object.entries(value).filter(
+        ([key]) => !["id", "uuid", "description"].includes(key),
+      ),
+    ),
   };
 
   for (const field of ["project", "modified", "parent", "parent_uuid"] as const) {
@@ -57,6 +63,28 @@ export async function getTasks(): Promise<Task[]> {
       const status = error.response?.status;
       if (status) {
         throw new Error(`The TaskWarrior API returned HTTP ${status}.`);
+      }
+      throw new Error("Unable to reach the TaskWarrior API.");
+    }
+    throw error;
+  }
+}
+
+export async function getTaskByUuid(uuid: string): Promise<Task> {
+  try {
+    const { data } = await apiClient.get<unknown>(
+      `/tasks/${encodeURIComponent(uuid)}`,
+    );
+    return parseTask(data);
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.response?.status === 404) {
+        throw new Error("This task could not be found.");
+      }
+      if (error.response?.status) {
+        throw new Error(
+          `The TaskWarrior API returned HTTP ${error.response.status}.`,
+        );
       }
       throw new Error("Unable to reach the TaskWarrior API.");
     }

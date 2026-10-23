@@ -1,5 +1,7 @@
 import { TaskCard } from "@/components/tasks/TaskCard";
+import { TaskDetails } from "@/components/tasks/TaskDetails";
 import type { Task } from "@/lib/tasks";
+import { useState } from "react";
 
 type ViewMode = "boxes" | "list";
 interface TaskNode {
@@ -53,13 +55,20 @@ function TaskBranch({
   node,
   view,
   depth,
+  onSelect,
 }: {
   node: TaskNode;
   view: ViewMode;
   depth: number;
+  onSelect: (uuid: string) => void;
 }) {
   return (
-    <TaskCard task={node.task} view={view} depth={depth}>
+    <TaskCard
+      task={node.task}
+      view={view}
+      depth={depth}
+      onSelect={onSelect}
+    >
       {node.children.length > 0 && (
         <div className="task-children">
           {node.children.map((child) => (
@@ -68,6 +77,7 @@ function TaskBranch({
               node={child}
               view={view}
               depth={depth + 1}
+              onSelect={onSelect}
             />
           ))}
         </div>
@@ -83,6 +93,8 @@ export function TaskList({
   error,
   onRetry,
 }: TaskListProps) {
+  const [selectedUuid, setSelectedUuid] = useState<string | null>(null);
+
   if (error) {
     return (
       <div className="task-state task-error" role="alert">
@@ -115,10 +127,24 @@ export function TaskList({
   }
 
   return (
-    <div className={`task-grid ${view === "list" ? "list-view" : ""}`}>
-      {buildTaskTree(tasks).map((node) => (
-        <TaskBranch key={node.task.uuid} node={node} view={view} depth={0} />
-      ))}
-    </div>
+    <>
+      <div className={`task-grid ${view === "list" ? "list-view" : ""}`}>
+        {buildTaskTree(tasks).map((node) => (
+          <TaskBranch
+            key={node.task.uuid}
+            node={node}
+            view={view}
+            depth={0}
+            onSelect={setSelectedUuid}
+          />
+        ))}
+      </div>
+      {selectedUuid && (
+        <TaskDetails
+          uuid={selectedUuid}
+          onClose={() => setSelectedUuid(null)}
+        />
+      )}
+    </>
   );
 }
