@@ -1,6 +1,6 @@
 # TaskWarrior Web
 
-A single-page web interface for viewing Taskwarrior tasks from the [TaskWarrior API](../server/README.md). Built with Next.js, React, TypeScript, and Axios.
+A single-page web interface for viewing Taskwarrior tasks from the [TaskWarrior API](https://github.com/Sief-Ali/taskwarrior-api). Built with Next.js, React, TypeScript, and Axios.
 
 ![TaskWarrior Web home page](./assets/home.png)
 
