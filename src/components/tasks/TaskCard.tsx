@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 import type { CSSProperties } from "react";
 import type { Task } from "@/lib/tasks";
+import { parseTaskwarriorTimestamp } from "@/lib/taskwarriorTime";
+import { TaskwarriorTime } from "@/components/tasks/TaskwarriorTime";
 
 interface TaskCardProps {
   task: Task;
@@ -13,6 +15,7 @@ interface TaskCardProps {
 export function TaskCard({ task, view, depth, onSelect, children }: TaskCardProps) {
   const status = task.status.toLowerCase();
   const statusClass = status.replace(/[^a-z0-9]+/g, "-");
+  const dueDate = task.due ? parseTaskwarriorTimestamp(task.due) : null;
 
   return (
     <div className={`task-branch ${view === "list" ? "list-branch" : ""}`}>
@@ -41,6 +44,11 @@ export function TaskCard({ task, view, depth, onSelect, children }: TaskCardProp
         <div className="task-card-bottom">
           <div className="task-metadata">
             {task.project && <span className="task-project">{task.project}</span>}
+            {dueDate && task.due && (
+              <span className="task-due">
+                <TaskwarriorTime value={task.due} prefix="DUE" />
+              </span>
+            )}
             {typeof task.urgency === "number" && (
               <span className="task-urgency">URGENCY {task.urgency.toFixed(1)}</span>
             )}

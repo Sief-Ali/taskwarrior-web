@@ -4,7 +4,7 @@ A single-page web interface for viewing Taskwarrior tasks from the [TaskWarrior 
 
 ![TaskWarrior Web home page](./assets/home.png)
 
-> **Status:** Early development  
+> **Status:** Pre-release `0.2.1` — Read-only support
 > **Current scope:** Read-only task access
 
 ## Features
@@ -13,6 +13,7 @@ A single-page web interface for viewing Taskwarrior tasks from the [TaskWarrior 
 - Switch between box and list layouts.
 - Display subtasks beneath their parent when the API includes a `parent` or `parent_uuid` field.
 - Show task status, project, and urgency when available.
+- Parse Taskwarrior UTC timestamps and display due dates and task times in the viewer's local timezone.
 - Refresh tasks and view loading, empty, and error states.
 - Responsive layout with bold JetBrains Mono typography and readable system-font fallbacks.
 
@@ -71,7 +72,7 @@ pnpm dev
 
 ## API
 
-The web app uses the read-only `GET /tasks` endpoint and expects a JSON array. A task must include an `id`, `uuid`, `description`, and `status`. It can also include fields such as `project`, `urgency`, `modified`, and `parent` or `parent_uuid`.
+The web app uses the read-only `GET /tasks` endpoint and expects a JSON array. A task must include an `id`, `uuid`, `description`, and `status`. It can also include fields such as `project`, `urgency`, `due`, `entry`, `modified`, and `parent` or `parent_uuid`. Taskwarrior timestamps in `YYYYMMDDTHHmmssZ` format are displayed in the browser's local timezone; the original UTC timestamp is available as the time's tooltip.
 
 For the complete API setup, configuration, and endpoint documentation, see the [TaskWarrior API README](https://github.com/Sief-Ali/taskwarrior-api). The interactive API reference is available at `http://localhost:5000/v1/api-docs/` when using the backend's `/v1` prefix.
 

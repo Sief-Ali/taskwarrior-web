@@ -7,6 +7,7 @@ export interface Task {
   description: string;
   status: string;
   project?: string;
+  due?: string;
   modified?: string;
   urgency?: number;
   parent?: string;
@@ -41,7 +42,13 @@ function parseTask(value: unknown): Task {
     ),
   };
 
-  for (const field of ["project", "modified", "parent", "parent_uuid"] as const) {
+  for (const field of [
+    "project",
+    "due",
+    "modified",
+    "parent",
+    "parent_uuid",
+  ] as const) {
     if (typeof value[field] === "string") task[field] = value[field];
   }
   if (typeof value.urgency === "number" && Number.isFinite(value.urgency)) {

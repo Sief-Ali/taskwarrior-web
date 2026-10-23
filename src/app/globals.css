@@ -370,6 +370,7 @@ a:focus-visible {
 }
 
 .task-project,
+.task-due,
 .task-urgency {
   padding: 5px 7px;
   background: #e5e9e5;
@@ -377,6 +378,11 @@ a:focus-visible {
   font-size: 10px;
   font-weight: 700;
   overflow-wrap: anywhere;
+}
+
+.task-due {
+  background: #f5e8c9;
+  color: #765216;
 }
 
 .task-urgency {

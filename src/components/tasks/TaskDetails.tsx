@@ -1,21 +1,43 @@
 "use client";
 
 import { useEffect } from "react";
+import type { ReactNode } from "react";
 import { useTaskDetails } from "@/hooks/useTaskDetails";
 import type { Task } from "@/lib/tasks";
+import { parseTaskwarriorTimestamp } from "@/lib/taskwarriorTime";
+import { TaskwarriorTime } from "@/components/tasks/TaskwarriorTime";
 
 interface TaskDetailsProps {
   uuid: string;
   onClose: () => void;
 }
 
-function displayValue(value: unknown): string {
-  if (typeof value === "string") return value || "—";
+const DATE_FIELDS = new Set([
+  "due",
+  "end",
+  "entry",
+  "modified",
+  "scheduled",
+  "start",
+  "until",
+  "wait",
+]);
+
+function displayValue(value: unknown, field?: string): ReactNode {
+  if (typeof value === "string") {
+    if (field && DATE_FIELDS.has(field)) {
+      const date = parseTaskwarriorTimestamp(value);
+      if (date) {
+        return <TaskwarriorTime value={value} />;
+      }
+    }
+    return value || "—";
+  }
   if (typeof value === "number" || typeof value === "boolean") {
     return String(value);
   }
   if (Array.isArray(value)) {
-    return value.map(displayValue).join(", ") || "—";
+    return value.map((item) => displayValue(item)).join(", ") || "—";
   }
   if (value !== null && typeof value === "object") {
     return JSON.stringify(value);
@@ -41,7 +63,7 @@ function TaskFacts({ task }: { task: Task }) {
       {details.map(([field, value]) => (
         <div className="detail-fact" key={field}>
           <dt>{fieldLabel(field)}</dt>
-          <dd>{displayValue(value)}</dd>
+          <dd>{displayValue(value, field)}</dd>
         </div>
       ))}
     </dl>
