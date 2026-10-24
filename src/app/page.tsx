@@ -5,10 +5,12 @@ import { TaskToolbar } from "@/components/tasks/TaskToolbar";
 import { useTasks } from "@/hooks/useTasks";
 import { useState } from "react";
 import Link from "next/link";
+import { TaskForm } from "@/components/tasks/TaskForm";
 
 export default function Home() {
   const { tasks, loading, error, refresh } = useTasks();
   const [view, setView] = useState<"boxes" | "list">("boxes");
+  const [creating, setCreating] = useState(false);
   const pendingCount = tasks.filter((task) => task.status === "pending").length;
 
   return (
@@ -41,6 +43,7 @@ export default function Home() {
           onViewChange={setView}
           onRefresh={refresh}
           loading={loading}
+          onCreate={() => setCreating(true)}
         />
 
         <TaskList
@@ -49,8 +52,10 @@ export default function Home() {
           loading={loading}
           error={error}
           onRetry={refresh}
+          onMutated={refresh}
         />
       </div>
+      {creating && <TaskForm onClose={() => setCreating(false)} onCreated={refresh} />}
     </main>
   );
 }

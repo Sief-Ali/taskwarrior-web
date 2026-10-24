@@ -15,6 +15,7 @@ interface TaskListProps {
   loading: boolean;
   error: string | null;
   onRetry: () => void;
+  onMutated: () => void;
 }
 
 function buildTaskTree(tasks: Task[]): TaskNode[] {
@@ -92,6 +93,7 @@ export function TaskList({
   loading,
   error,
   onRetry,
+  onMutated,
 }: TaskListProps) {
   const [selectedUuid, setSelectedUuid] = useState<string | null>(null);
 
@@ -143,6 +145,7 @@ export function TaskList({
         <TaskDetails
           uuid={selectedUuid}
           onClose={() => setSelectedUuid(null)}
+          onMutated={onMutated}
         />
       )}
     </>

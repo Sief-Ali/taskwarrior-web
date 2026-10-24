@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getTaskByUuid, type Task } from "@/lib/tasks";
 
 interface TaskDetailState {
@@ -15,6 +15,7 @@ export function useTaskDetails(uuid: string | null) {
     loading: false,
     error: null,
   });
+  const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
     if (!uuid) return;
@@ -42,11 +43,13 @@ export function useTaskDetails(uuid: string | null) {
     return () => {
       active = false;
     };
-  }, [uuid]);
+  }, [uuid, reloadKey]);
+
+  const refresh = useCallback(() => setReloadKey((key) => key + 1), []);
 
   return uuid === null
-    ? { uuid: null, task: null, loading: false, error: null }
+    ? { uuid: null, task: null, loading: false, error: null, refresh }
     : state.uuid === uuid
-    ? state
-    : { uuid, task: null, loading: true, error: null };
+    ? { ...state, refresh }
+    : { uuid, task: null, loading: true, error: null, refresh };
 }

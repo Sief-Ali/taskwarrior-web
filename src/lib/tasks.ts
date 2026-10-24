@@ -15,6 +15,70 @@ export interface Task {
   details: Record<string, unknown>;
 }
 
+export type TaskPriority = "H" | "M" | "L";
+export interface TaskCreateInput {
+  description: string;
+  project?: string;
+  priority?: TaskPriority;
+  due?: string;
+  tags?: string[];
+}
+export interface TaskUpdateInput {
+  description?: string;
+  project?: string;
+  priority?: TaskPriority;
+  due?: string;
+  addTags?: string[];
+  removeTags?: string[];
+}
+
+function mutationError(error: unknown): Error {
+  if (!axios.isAxiosError(error)) {
+    return error instanceof Error ? error : new Error("The task action failed.");
+  }
+  const status = error.response?.status;
+  const body = error.response?.data as { code?: unknown } | undefined;
+  const code = typeof body?.code === "string" ? body.code : "";
+  if (code === "TASK_NOT_FOUND") return new Error("This task no longer exists. Refresh the task list and try again.");
+  if (code === "INVALID_UUID") return new Error("The task identifier is invalid. Refresh the task list and try again.");
+  if (code === "INVALID_INPUT") return new Error("Some task fields are invalid. Review the values and try again.");
+  if (status === 502 || status === 503 || status === 504) return new Error("Taskwarrior could not complete this action. Try again shortly.");
+  if (status) return new Error(`The task action failed (HTTP ${status}).`);
+  return new Error("Unable to reach the TaskWarrior API.");
+}
+
+async function mutate(request: () => Promise<unknown>): Promise<void> {
+  try {
+    await request();
+  } catch (error) {
+    throw mutationError(error);
+  }
+}
+
+export function createTask(input: TaskCreateInput): Promise<void> {
+  return mutate(() => apiClient.post("/tasks", input));
+}
+
+export function updateTask(uuid: string, input: TaskUpdateInput): Promise<void> {
+  return mutate(() => apiClient.patch(`/tasks/${encodeURIComponent(uuid)}`, input));
+}
+
+export function completeTask(uuid: string): Promise<void> {
+  return mutate(() => apiClient.post(`/tasks/${encodeURIComponent(uuid)}/complete`));
+}
+
+export function deleteTask(uuid: string): Promise<void> {
+  return mutate(() => apiClient.delete(`/tasks/${encodeURIComponent(uuid)}`));
+}
+
+export function startTask(uuid: string): Promise<void> {
+  return mutate(() => apiClient.post(`/tasks/${encodeURIComponent(uuid)}/start`));
+}
+
+export function stopTask(uuid: string): Promise<void> {
+  return mutate(() => apiClient.post(`/tasks/${encodeURIComponent(uuid)}/stop`));
+}
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }

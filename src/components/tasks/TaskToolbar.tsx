@@ -5,6 +5,7 @@ interface TaskToolbarProps {
   onViewChange: (view: ViewMode) => void;
   onRefresh: () => void;
   loading: boolean;
+  onCreate: () => void;
 }
 
 export function TaskToolbar({
@@ -12,6 +13,7 @@ export function TaskToolbar({
   onViewChange,
   onRefresh,
   loading,
+  onCreate,
 }: TaskToolbarProps) {
   return (
     <div className="task-toolbar">
@@ -20,6 +22,7 @@ export function TaskToolbar({
         <span>TASK LIST</span>
       </div>
       <div className="toolbar-actions">
+        <button className="primary-action toolbar-create" type="button" onClick={onCreate}>＋ NEW TASK</button>
         <button
           className="refresh-button"
           type="button"
