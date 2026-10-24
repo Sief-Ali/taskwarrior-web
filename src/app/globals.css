@@ -1,14 +1,18 @@
 :root {
-  color-scheme: light;
-  --ink: #27332c;
-  --muted: #59645d;
-  --line: #d9dfd9;
-  --canvas: #f1f3f0;
-  --surface: #fcfdfb;
-  --accent: #38654b;
-  --accent-soft: #e5eee7;
-  --warning: #805d2b;
-  --danger: #87483f;
+  color-scheme: dark;
+  --ink: #ecebec;
+  --muted: #a5a2a3;
+  --line: #3e3b3c;
+  --canvas: #151415;
+  --surface: #1d1b1c;
+  --surface-raised: #242223;
+  --accent: #aaa6a7;
+  --accent-strong: #c6c2c3;
+  --accent-soft: #302e2f;
+  --accent-ink: #1d1b1c;
+  --warning: #d9b36e;
+  --danger: #e18c83;
+  --danger-soft: #382725;
 }
 
 * {
@@ -33,7 +37,7 @@ a {
 
 button:focus-visible,
 a:focus-visible {
-  outline: 3px solid #347a52;
+  outline: 3px solid var(--accent-strong);
   outline-offset: 3px;
 }
 
@@ -68,13 +72,8 @@ a:focus-visible {
 .app-logo {
   width: 34px;
   height: 34px;
-  display: grid;
-  place-items: center;
-  border: 1px solid var(--line);
-  background: var(--accent);
-  color: white;
-  font-size: 20px;
-  font-weight: 800;
+  display: block;
+  object-fit: contain;
 }
 
 .api-status {
@@ -91,14 +90,14 @@ a:focus-visible {
 .toolbar-indicator {
   width: 10px;
   height: 10px;
-  border: 2px solid var(--accent);
+  border: 2px solid var(--accent-strong);
   border-radius: 50%;
-  background: #53ba75;
+  background: var(--accent-strong);
 }
 
 .api-status-dot.offline {
   border-color: var(--danger);
-  background: #e66b60;
+  background: var(--danger);
 }
 
 .workspace {
@@ -196,9 +195,9 @@ a:focus-visible {
   font-size: 11px;
   font-weight: 800;
 }
-.primary-action { border-color: var(--accent); background: var(--accent); color: white; }
-.secondary-action { background: white; color: var(--ink); }
-.danger-action { border-color: #d9bdb9; background: #fbefed; color: var(--danger); }
+.primary-action { border-color: var(--accent); background: var(--accent); color: var(--accent-ink); }
+.secondary-action { background: var(--surface-raised); color: var(--ink); }
+.danger-action { border-color: #70443f; background: var(--danger-soft); color: var(--danger); }
 .primary-action:disabled, .secondary-action:disabled, .danger-action:disabled { cursor: wait; opacity: .55; }
 .toolbar-create { min-height: 34px; padding: 7px 10px; }
 
@@ -271,8 +270,8 @@ a:focus-visible {
 }
 
 .view-switch button.selected {
-  border: 1px solid #bacabd;
-  background: #edf3ee;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
   color: var(--ink);
 }
 
@@ -299,7 +298,7 @@ a:focus-visible {
 }
 
 .task-card:hover {
-  border-color: #b8c7bb;
+  border-color: var(--accent);
 }
 
 .task-card[role="button"] {
@@ -307,7 +306,7 @@ a:focus-visible {
 }
 
 .task-card[role="button"]:focus-visible {
-  outline: 2px solid #6c9475;
+  outline: 2px solid var(--accent-strong);
   outline-offset: 3px;
 }
 
@@ -327,9 +326,9 @@ a:focus-visible {
   align-items: center;
   gap: 8px;
   overflow: hidden;
-  border: 1px solid #c6d8ca;
+  border: 1px solid #5a5557;
   background: var(--accent-soft);
-  color: #173e29;
+  color: var(--accent-strong);
   font-size: 11px;
   font-weight: 800;
   text-overflow: ellipsis;
@@ -346,16 +345,16 @@ a:focus-visible {
 
 .status-completed,
 .status-deleted {
-  border-color: #727b75;
-  background: #e4e7e4;
-  color: #3e4842;
+  border-color: #555152;
+  background: #292728;
+  color: #c1bdbe;
 }
 
 .status-waiting,
 .status-blocked {
-  border-color: #a8782f;
-  background: #f2e9d8;
-  color: #614312;
+  border-color: #725c37;
+  background: #332c21;
+  color: var(--warning);
 }
 
 .task-number {
@@ -387,16 +386,16 @@ a:focus-visible {
 .task-due,
 .task-urgency {
   padding: 5px 7px;
-  background: #e5e9e5;
-  color: #303b34;
+  background: #302d2e;
+  color: #dedcdd;
   font-size: 10px;
   font-weight: 700;
   overflow-wrap: anywhere;
 }
 
 .task-due {
-  background: #f5e8c9;
-  color: #765216;
+  background: #332c21;
+  color: var(--warning);
 }
 
 .task-urgency {
@@ -409,12 +408,12 @@ a:focus-visible {
   padding-left: 15px;
   display: grid;
   gap: 13px;
-  border-left: 1px solid #bdcdbf;
+  border-left: 1px solid #514d4e;
 }
 
 .task-children .task-card {
   min-height: 145px;
-  background: #f2f5f2;
+  background: var(--surface-raised);
 }
 
 .task-children .task-card h2 {
@@ -478,7 +477,7 @@ a:focus-visible {
 .task-skeleton {
   min-height: 180px;
   border: 1px solid var(--line);
-  background: linear-gradient(90deg, #e2e6e2 25%, #f5f7f5 50%, #e2e6e2 75%);
+  background: linear-gradient(90deg, #242223 25%, #302d2e 50%, #242223 75%);
   background-size: 200% 100%;
   animation: loading-sweep 1.4s infinite linear;
 }
@@ -527,7 +526,7 @@ a:focus-visible {
   padding: 12px 15px;
   border: 1px solid var(--line);
   background: var(--accent);
-  color: white;
+  color: var(--accent-ink);
   cursor: pointer;
   font-size: 12px;
   font-weight: 800;
@@ -540,7 +539,7 @@ a:focus-visible {
   padding: 20px;
   display: flex;
   justify-content: flex-end;
-  background: rgb(28 38 31 / 32%);
+  background: rgb(0 0 0 / 68%);
 }
 
 .detail-panel {
@@ -550,7 +549,7 @@ a:focus-visible {
   overflow-y: auto;
   border: 1px solid var(--line);
   background: var(--surface);
-  box-shadow: -8px 0 28px rgb(20 30 22 / 12%);
+  box-shadow: -8px 0 28px rgb(0 0 0 / 35%);
 }
 
 .detail-header {
@@ -574,7 +573,7 @@ a:focus-visible {
   height: 38px;
   flex: 0 0 auto;
   border: 1px solid var(--line);
-  background: white;
+  background: var(--surface-raised);
   cursor: pointer;
   font-size: 28px;
   line-height: 1;
@@ -639,8 +638,8 @@ a:focus-visible {
 
 .task-form { margin-top: 27px; display: grid; gap: 17px; }
 .task-form label { display: grid; gap: 7px; color: var(--ink); font-size: 12px; font-weight: 800; }
-.task-form input, .task-form select { width: 100%; min-height: 42px; padding: 9px 11px; border: 1px solid var(--line); border-radius: 0; background: white; color: var(--ink); font: inherit; font-size: 13px; }
-.task-form input:focus-visible, .task-form select:focus-visible { outline: 3px solid #347a52; outline-offset: 2px; }
+.task-form input, .task-form select { width: 100%; min-height: 42px; padding: 9px 11px; border: 1px solid var(--line); border-radius: 0; background: var(--surface-raised); color: var(--ink); font: inherit; font-size: 13px; }
+.task-form input:focus-visible, .task-form select:focus-visible { outline: 3px solid var(--accent-strong); outline-offset: 2px; }
 .optional-label { color: var(--muted); font-size: 10px; font-weight: 600; }
 .form-actions, .action-buttons { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; }
 .form-actions { justify-content: flex-end; }

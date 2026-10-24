@@ -4,7 +4,7 @@ A single-page web interface for viewing Taskwarrior tasks from the [TaskWarrior 
 
 ![TaskWarrior Web home page](./assets/home.png)
 
-> **Status:** `0.3.1` — Task CRUD and lifecycle actions
+> **Status:** `0.4.0` — Dark theme, Taskwarrior gray branding, and Task CRUD and lifecycle actions
 > **Current scope:** Read and write access through TaskWarrior API v0.2.0
 
 ## Features
@@ -19,6 +19,8 @@ A single-page web interface for viewing Taskwarrior tasks from the [TaskWarrior 
 - Edit task fields and tags, then refresh from the API after each successful mutation.
 - Start, stop, complete, and soft-delete tasks from the details panel.
 - Responsive layout with bold JetBrains Mono typography and readable system-font fallbacks.
+- Dark interface with a restrained gray accent drawn from the official Taskwarrior mark.
+- Official Taskwarrior SVG mark in the application header and browser tab.
 
 The API's mutation routes have no authentication or authorization. Protect the API with network or deployment controls before exposing this client to untrusted users. CORS does not provide access control.
 

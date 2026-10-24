@@ -5,6 +5,7 @@ import { TaskToolbar } from "@/components/tasks/TaskToolbar";
 import { useTasks } from "@/hooks/useTasks";
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { TaskForm } from "@/components/tasks/TaskForm";
 
 export default function Home() {
@@ -17,7 +18,15 @@ export default function Home() {
     <main className="app-shell">
       <header className="app-topbar">
         <Link className="app-brand" href="/" aria-label="TaskWarrior home">
-          <span className="app-logo" aria-hidden="true">T</span>
+          <Image
+            className="app-logo"
+            src="https://taskwarrior.org/images/tw.svg"
+            alt=""
+            aria-hidden="true"
+            width={34}
+            height={34}
+            unoptimized
+          />
           <span>taskwarrior</span>
         </Link>
         <div className="api-status">
