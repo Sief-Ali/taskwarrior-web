@@ -3,16 +3,46 @@
 import { TaskList } from "@/components/tasks/TaskList";
 import { TaskToolbar } from "@/components/tasks/TaskToolbar";
 import { useTasks } from "@/hooks/useTasks";
-import { useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { TaskForm } from "@/components/tasks/TaskForm";
+
+type Theme = "light" | "dark";
+
+function subscribeToTheme(onChange: () => void) {
+  window.addEventListener("storage", onChange);
+  window.addEventListener("taskwarrior-theme-change", onChange);
+  return () => {
+    window.removeEventListener("storage", onChange);
+    window.removeEventListener("taskwarrior-theme-change", onChange);
+  };
+}
+
+function getThemeSnapshot(): Theme {
+  return window.localStorage.getItem("taskwarrior-theme") === "dark" ? "dark" : "light";
+}
+
+function getServerThemeSnapshot(): Theme {
+  return "light";
+}
 
 export default function Home() {
   const { tasks, loading, error, refresh } = useTasks();
   const [view, setView] = useState<"boxes" | "list">("boxes");
   const [creating, setCreating] = useState(false);
+  const theme = useSyncExternalStore(subscribeToTheme, getThemeSnapshot, getServerThemeSnapshot);
   const pendingCount = tasks.filter((task) => task.status === "pending").length;
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+  }, [theme]);
+
+  function toggleTheme() {
+    const nextTheme: Theme = theme === "light" ? "dark" : "light";
+    window.localStorage.setItem("taskwarrior-theme", nextTheme);
+    window.dispatchEvent(new Event("taskwarrior-theme-change"));
+  }
 
   return (
     <main className="app-shell">
@@ -29,9 +59,20 @@ export default function Home() {
           />
           <span>taskwarrior</span>
         </Link>
-        <div className="api-status">
-          <span className={`api-status-dot ${error ? "offline" : ""}`} />
-          {error ? "API offline" : loading ? "Syncing tasks" : "API connected"}
+        <div className="header-controls">
+          <button
+            className="theme-toggle"
+            type="button"
+            onClick={toggleTheme}
+            aria-label={`Switch to ${theme === "light" ? "dark" : "light"} theme`}
+            aria-pressed={theme === "dark"}
+          >
+            {theme === "light" ? "◐ Dark theme" : "☀ Light theme"}
+          </button>
+          <div className="api-status">
+            <span className={`api-status-dot ${error ? "offline" : ""}`} />
+            {error ? "API offline" : loading ? "Syncing tasks" : "API connected"}
+          </div>
         </div>
       </header>
 
