@@ -1,4 +1,12 @@
+import { existsSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import type { NextConfig } from "next";
+
+const clientRoot = dirname(fileURLToPath(import.meta.url));
+const workspaceRoot = existsSync(resolve(clientRoot, "../pnpm-workspace.yaml"))
+  ? resolve(clientRoot, "..")
+  : clientRoot;
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -8,6 +16,7 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
   turbopack: {
+    root: workspaceRoot,
     rules: {
       "*.css": {
         loaders: ["@tailwindcss/turbopack"],
