@@ -1,8 +1,8 @@
 # Frontend Upgrade Plan for TaskWarrior API v0.2.0
 
-**Current frontend:** `0.3.0`, task creation, editing, and lifecycle actions
+**Current frontend:** `0.3.1`, task CRUD and lifecycle actions
 **Backend target:** TaskWarrior API `v0.2.0`
-**Proposed frontend target:** `0.3.0`
+**Proposed frontend target:** `0.3.1`
 
 ## Goal
 

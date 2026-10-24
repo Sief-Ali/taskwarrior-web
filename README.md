@@ -4,7 +4,7 @@ A single-page web interface for viewing Taskwarrior tasks from the [TaskWarrior 
 
 ![TaskWarrior Web home page](./assets/home.png)
 
-> **Status:** `0.3.0` — Task creation, editing, and lifecycle actions
+> **Status:** `0.3.1` — Task CRUD and lifecycle actions
 > **Current scope:** Read and write access through TaskWarrior API v0.2.0
 
 ## Features
