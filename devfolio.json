@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0.0",
+
+  "portfolio": {
+    "title": "Taskwarrior Web Client",
+    "description": "A web client for Taskwarrior, a command-line task management tool. This project provides a user-friendly interface to manage tasks, view reports, and synchronize with the Taskwarrior server.",
+    "tracks": ["software"],
+    "featured": true
+  },
+
+  "presentation": {
+    "type": "mdx",
+    "path": "README.md"
+  }
+}
